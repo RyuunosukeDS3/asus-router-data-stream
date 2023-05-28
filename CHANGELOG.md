@@ -10,7 +10,7 @@
 
 ## Fixes
 
- - N/A
+ - Fixing IP
 
 ## Compatibility Breaker
 
