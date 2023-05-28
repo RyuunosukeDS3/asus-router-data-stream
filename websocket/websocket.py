@@ -1,5 +1,5 @@
 import json
-import asyncio
+import time
 
 from websockets import server
 from asus_api import AsusIp
@@ -7,7 +7,7 @@ from asus_api import AsusIp
 
 class Websocket:
     def __init__(self):
-        self.start_server = server.serve(self._handler, "localhost", 5555)
+        self.start_server = server.serve(self._handler, "127.0.0.1", 5555)
         self.asus_api = AsusIp()
 
     async def _handler(self, websocket):
@@ -22,4 +22,4 @@ class Websocket:
 
             await websocket.send(json.dumps(data))
 
-            asyncio.sleep(10)
+            time.sleep(10)

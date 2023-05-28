@@ -2,7 +2,7 @@
 
 ## New Features
 
- - Creating a websocket that streams data from asus router
+ - N/A
 
 ## Enhancements
 
