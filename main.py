@@ -1,9 +1,7 @@
-from config import Config
-from asus_api import AsusIp
-from websocket import Websocket
-
 import asyncio
-import logging
+
+from config import Config
+from websocket import Websocket
 
 config = Config()
 websocket = Websocket()

@@ -1,9 +1,9 @@
-import requests
 import logging
 import json
 import base64
 import os
 import time
+import requests
 
 
 class AsusIp:
@@ -34,7 +34,7 @@ class AsusIp:
     def _get(self, command):
         data = f"hook={command}"
         try:
-            return requests.post(
+            response = requests.post(
                 url=f"http://{self.asus_router_ip}/appGet.cgi",
                 data=data,
                 headers=self.headers,
@@ -42,13 +42,14 @@ class AsusIp:
             ).text
         except Exception as err:
             logging.error("Failed to get %s with error: %s", command, err)
+        return response
 
     def get_uptime_secs(self):
         response = self._get("uptime()")
         since = response.partition(":")[2].partition("(")[0]
-        up = response.partition("(")[2].partition(" ")[0]
+        uptime = response.partition("(")[2].partition(" ")[0]
         response = json.loads(
-            "{" + '"since":"{}", "uptime":"{}"'.format(since, up) + "}"
+            "{" + f'"since":"{since}", "uptime":"{uptime}"' + "}"
         )
         return int(response["uptime"])
 
@@ -77,14 +78,14 @@ class AsusIp:
 
     def get_clients_info(self):
         clients = json.loads(self._get("get_clientlist()"))
-        list = []
+        client_list = []
         for client in clients["get_clientlist"]:
             if (
                 (len(client) == 17)
                 and ("isOnline" in clients["get_clientlist"][client])
                 and (clients["get_clientlist"][client]["isOnline"] == "1")
             ):
-                list.append(
+                client_list.append(
                     {
                         "name": clients["get_clientlist"][client]["name"],
                         "nickName": clients["get_clientlist"][client]["nickName"],
@@ -97,4 +98,4 @@ class AsusIp:
                         "totalRx": clients["get_clientlist"][client]["totalRx"],
                     }
                 )
-        return json.loads(json.dumps(list))
+        return json.loads(json.dumps(client_list))
