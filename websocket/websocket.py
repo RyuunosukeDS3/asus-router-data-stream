@@ -1,5 +1,6 @@
 import json
 import time
+import os
 
 from websockets import server
 from asus_api import AsusIp
@@ -7,7 +8,7 @@ from asus_api import AsusIp
 
 class Websocket:
     def __init__(self):
-        self.start_server = server.serve(self._handler, "", 5555)
+        self.start_server = server.serve(self._handler, os.getenv("WEBSOCKET_IP"), 5555)
         self.asus_api = AsusIp()
 
     async def _handler(self, websocket):
